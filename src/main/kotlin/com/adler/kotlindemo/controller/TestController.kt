@@ -15,8 +15,10 @@ import reactor.core.publisher.Mono
 @Api(tags = ["kotlin的demo代码"])
 @RestController
 @RequestMapping("demo")
-class TestController(private val testService: TestService,
-                     private val demoProperties: DemoProperties) {
+class TestController(
+    private val testService: TestService,
+    private val demoProperties: DemoProperties
+) {
 
     @ApiOperation("查询所有数据(不分页)")
     @GetMapping("all")
@@ -26,8 +28,10 @@ class TestController(private val testService: TestService,
 
     @ApiOperation("查询所有数据(分页)")
     @GetMapping("allPage")
-    fun findAllPage(@RequestParam(defaultValue = "1") current: Long,
-                    @RequestParam(defaultValue = "2") size: Long): Flux<StudentTest> {
+    fun findAllPage(
+        @RequestParam(defaultValue = "1") current: Long,
+        @RequestParam(defaultValue = "2") size: Long
+    ): Flux<StudentTest> {
         return testService.findAll().skip((current - 1) * size).take(size)
     }
 
@@ -41,7 +45,7 @@ class TestController(private val testService: TestService,
     @GetMapping("properties")
     fun getFromProperties(): Mono<String> {
         val t = demoProperties.test
-        return Mono.just(t)
+        return Mono.just("从配置文件中读取的数据为demo.test:$t")
     }
 
 
